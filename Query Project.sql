@@ -1,0 +1,68 @@
+-- Table MsStaff
+CREATE TABLE MsStaff (
+    StaffID CHAR (5) PRIMARY KEY CHECK (StaffID LIKE 'ST[0-9][0-9][0-9]'),
+    StaffName VARCHAR (50) NOT NULL,
+    StaffGender VARCHAR (10) NOT NULL,
+    StaffEmail VARCHAR (50) NOT NULL,
+    StaffAddress VARCHAR (50) NOT NULL,
+    StaffSalary INT NOT NULL,
+);
+
+-- Table MsVendor
+CREATE TABLE MsVendor (
+    VendorID CHAR (5) PRIMARY KEY CHECK (VendorID LIKE 'VE[0-9][0-9][0-9]'),
+    VendorName VARCHAR (50) NOT NULL,
+    VendorEmail VARCHAR (50) NOT NULL,
+    VendorAddress VARCHAR (50) NOT NULL,
+    VendorPhoneNumber INT NOT NULL,
+);
+
+-- Table MsCustomer
+CREATE TABLE MsCustomer (
+    CustomerID CHAR (5) PRIMARY KEY CHECK (CustomerID LIKE 'CU[0-9][0-9][0-9]'),
+    CustomerName VARCHAR (50) NOT NULL,
+    CustomerGender VARCHAR (10) NOT NULL,
+    CustomerDOB DATE NOT NULL,
+    CustomerAddress VARCHAR (50) NOT NULL,
+    CustomerEmail VARCHAR(50) NOT NULL,
+)
+
+-- Table MsShoes
+CREATE TABLE MsShoes (
+	ShoesID CHAR(5) PRIMARY KEY CHECK (ShoesID LIKE 'SH[0-9][0-9][0-9]'),
+	ShoesName VARCHAR(50) NOT NULL,
+	ShoesPrice INT NOT NULL,
+	ShoesDescription VARCHAR (255)
+)
+
+-- PurchaseHeader
+CREATE TABLE PurchaseHeader (
+	PurchaseID CHAR(5) PRIMARY KEY CHECK (PurchaseID LIKE 'PU[0-9][0-9][0-9]'),
+	StaffID CHAR(5) FOREIGN KEY REFERENCES MsStaff(StaffID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	VendorID CHAR(5) FOREIGN KEY REFERENCES MsVendor(VendorID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	PurchaseDate DATE NOT NULL
+)
+
+-- PurchaseDetail
+CREATE TABLE PurchaseDetail(
+	PurchaseID CHAR(5) FOREIGN KEY REFERENCES PurchaseHeader(PurchaseID)  ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	Quantity INT NOT NULL,
+	ShoesID CHAR(5) FOREIGN KEY REFERENCES MsShoes(ShoesID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	PRIMARY KEY (PurchaseID)
+)
+
+-- TransactionHeader
+CREATE TABLE Transactionheader (
+	TransactionID CHAR(5) PRIMARY KEY CHECK(TransactionID LIKE 'TR[0-9][0-9][0-9]'),
+	StaffID CHAR(5) FOREIGN KEY REFERENCES MsStaff(StaffID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	CustomerID CHAR(5) FOREIGN KEY REFERENCES MsCustomer(CustomerID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	TransactionDate DATE NOT NULL
+)
+
+-- TransactionDetail
+CREATE TABLE TransactionDetail (
+	TransactionID CHAR(5) FOREIGN KEY REFERENCES TransactionHeader(TransactionID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	ShoesID CHAR(5) FOREIGN KEY REFERENCES MsShoes(ShoesID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+	Quantity INT NOT NULL,
+	PRIMARY KEY (TransactionID)
+)
