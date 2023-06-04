@@ -11,7 +11,7 @@ CREATE TABLE MsStaff (
     StaffEmail VARCHAR (50) NOT NULL,
     StaffAddress VARCHAR (50) NOT NULL,
     StaffSalary INT NOT NULL,
-);
+)
 
 -- Table MsVendor
 CREATE TABLE MsVendor (
@@ -20,8 +20,7 @@ CREATE TABLE MsVendor (
     VendorEmail VARCHAR (50) NOT NULL,
     VendorAddress VARCHAR (50) NOT NULL,
     VendorPhoneNumber INT NOT NULL,
-);
-
+)
 
 -- Table MsCustomer
 CREATE TABLE MsCustomer (
@@ -72,3 +71,58 @@ CREATE TABLE TransactionDetail (
 	Quantity INT NOT NULL,
 	PRIMARY KEY (TransactionID)
 )
+SELECT * FROM TransactionHeader
+
+-- CONSTRAINTS
+
+ALTER TABLE MsVendor
+ADD CONSTRAINT Check_Email CHECK(VendorEmail LIKE '%@gmail.com')
+
+ALTER TABLE MsStaff
+ADD CONSTRAINT Check_LEN CHECK(LEN(StaffName) > 10)
+
+ALTER TABLE MsStaff
+ADD CONSTRAINT Check_Gender CHECK(StaffGender IN ('Male', 'Female'))
+
+ALTER TABLE MsStaff
+ADD CONSTRAINT Check_Salary CHECK(StaffSalary BETWEEN 120000 AND 500000)
+
+ALTER TABLE MsCustomer
+ADD CONSTRAINT Check_Cust_LEN CHECK (LEN(CustomerName) > 10)
+
+ALTER TABLE MsCustomer
+ADD CONSTRAINT Check_Cust_Gender CHECK (CustomerGender IN('Male', 'Female'))
+
+ALTER TABLE MsCustomer
+ADD CONSTRAINT Check_Cust_Email CHECK(CustomerEmail LIKE '%@gmail.com')
+
+ALTER TABLE MsCustomer
+ADD CONSTRAINT Check_Cust_Age CHECK(DATEDIFF(YEAR, CustomerDOB, GETDATE()) >=17)
+-- INSERT DATA
+
+-- MsTable
+-- MsCustomer
+INSERT INTO MsCustomer VALUES
+--('CU001','Andika Teriawan','Male','1997-04-11','Jl KH Fachrudin 4, Dki Jakarta','andikat97@gmail.com')
+('CU002','Matthew Saputra','Male','2000-01-22',' Jl Letjen Jamin Ginting 96','ucoks01@gmail.com'),
+('CU003','Josap Airlangga','Male','1999-03-04','Jl Jeruk Nipis 8','josair96@gmail.com'),
+('CU004','Yohana Hasanah','Female','2001-09-12','Jl Daan Mogot I 25','yohahaha1@gmail.com'),
+('CU005','Vivi Wulandari','Female','1993-08-17','Jl R Suprapto/21 A','wulan93@gmail.com'),
+('CU006','Baktiadi Sirait','Male','1988-02-27','Jl Mangga II 8 M','baktiadab@gmail.com'),
+('CU007','Danu Thamrin','Male','2000-04-13','Jl H Naim/24 B','thamrindan@gmail.com'),
+('CU008','Ucok Zulkarnain','Male','1997-05-22','Jl Panti Wreda Kel Ceger','ucokzul97@gmail.com'),
+('CU009','Anastasia Susanti','Female','2002-04-12','Jl Anggrek Cendrawasih Bl K/21','susan0204@gmail.com'),
+('CU010','Yani Suartini','Female','1996-11-28','Jl Kayu Putih 6B/11','suarmercon30@gmail.com')
+
+--MsStaff
+
+--MsVendor
+
+--TransactionHeader
+--PurchaseHeader
+
+--PurchaseDetail
+
+--TransactionHeader
+
+--TransactionHeader
