@@ -103,7 +103,7 @@ ADD CONSTRAINT Check_Cust_Age CHECK(DATEDIFF(YEAR, CustomerDOB, GETDATE()) >=17)
 -- MsTable
 -- MsCustomer
 INSERT INTO MsCustomer VALUES
---('CU001','Andika Teriawan','Male','1997-04-11','Jl KH Fachrudin 4, Dki Jakarta','andikat97@gmail.com')
+('CU001','Andika Teriawan','Male','1997-04-11','Jl KH Fachrudin 4, Dki Jakarta','andikat97@gmail.com'),
 ('CU002','Matthew Saputra','Male','2000-01-22',' Jl Letjen Jamin Ginting 96','ucoks01@gmail.com'),
 ('CU003','Josap Airlangga','Male','1999-03-04','Jl Jeruk Nipis 8','josair96@gmail.com'),
 ('CU004','Yohana Hasanah','Female','2001-09-12','Jl Daan Mogot I 25','yohahaha1@gmail.com'),
@@ -115,9 +115,30 @@ INSERT INTO MsCustomer VALUES
 ('CU010','Yani Suartini','Female','1996-11-28','Jl Kayu Putih 6B/11','suarmercon30@gmail.com')
 
 --MsStaff
+INSERT INTO MsStaff VALUES
+('ST001','Diah Rahayu','Female','diahrayu@gmail.com','Jl Pemuda Asli/11','320000'),
+('ST002','Kenari Ardianto','Male','kenArokardianto@gmail.com','Jl Penataran 9','295000'),
+('ST003','Nardi Budiyanto','Male','nardi.lega@gmail.com','Jl Ki. Raden No 83','315000'),
+('ST004','Lalita Rahmawati','Female','laras.kusma04@gmail.com','Jl Raya Bekasi Km22/58','270000'),
+('ST005','Daryani Wahyudi','Male','darwayudi@gmail.com','Jl Minangkabau Dlm, II 21','410000'),
+('ST006','Puji Nurdiyanti','Female','punurdiyanti@gmail.com','Jl Kecubung RT002/09 No 3','300000'),
+('ST007','Azalea Zulaika','Female','azapradipta@gmail.com','Komplek Roxy Max B E-2/48','475000'),
+('ST008','Salsabila Namaga','Female','salnamaga20@gmail.com','Jl Hayam Wuruk 108','400000'),
+('ST009','Perkasa Saputra','Male','poetraperkasa@gmail.com','Jl Hayam Wuruk Glodok B No 62','480000'),
+('ST010','Rizki Hidayat','Male','riskihidayat72@gmail.com','Jl Empu Sendok 30','350000')
 
 --MsVendor
-
+INSERT INTO MsVendor VALUES
+('VE001','Bakti Wacana','wacanaandri123@gmail.com','Jl Surya Kencana 24','089670301'),
+('VE002','Prayoga Kurniawan','prakurni2021@gmail.com','Jl Cendrawasih 23','0852173230'),
+('VE003','Daniswara Halim','danisbijak04@gmail.com','Gg.Yohanes No. 378','0812954566'),
+('VE004','Klarita Nasyiah','klaritanasyiah03@gmail.com','Jl Bukit Duri Tanjakan 53','081375087'),
+('VE005','Leonard Yaputro','leonardtar@gmail.com','Jl Agus Salim No. 532','0811861689'),
+('VE006','Novena Halimah','novenalim96@gmail.com','Jl Warakas 5','0812130175'),
+('VE007','Fitri Anggriani','Fitrianggrek@gmail.com','Jl Kwitang Raya 8','0878827453'),
+('VE008','Markus Widodo','markuswodo@gmail.com','Jl Medan Merdeka Slt 12','0852710064'),
+('VE009','Eko Setiawan','ekoekoeko4@gmail.com','Jl Mayjen Dl Panjaitan 45','0821705560'),
+('VE010','Bagas Simbolon','simbolonbagas88@gmail.com','Jl KH Wahi Hasyim 89','0855720042')
 --TransactionHeader
 --PurchaseHeader
 
