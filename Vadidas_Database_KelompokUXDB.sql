@@ -114,11 +114,6 @@ INSERT INTO MsCustomer VALUES
 ('CU009','Anastasia Susanti','Female','2002-04-12','Jl Anggrek Cendrawasih Bl K/21','susan0204@gmail.com'),
 ('CU010','Yani Suartini','Female','1996-11-28','Jl Kayu Putih 6B/11','suarmercon30@gmail.com')
 
--- Simulate transaction no 4
-INSERT INTO MsCustomer VALUES 
-('CU011','Totong Hulan','Male','1997-08-11','Jl Sunter Utara 5','Totongghulan12@gmail.com'),
-('CU012','Mei Xiao','Female','2000-02-12','Jl Asia Mega 6','Meixiao234@Gmail.com')
-
 --MsStaff
 INSERT INTO MsStaff VALUES
 ('ST001','Diah Rahayu','Female','diahrayu@gmail.com','Jl Pemuda Asli/11','320000'),
@@ -208,10 +203,6 @@ INSERT INTO PurchaseDetail VALUES
 ('PU015','SH005','20')
 
 --TransactionHeader
---('TransactionID', 'StaffID', 'CustomerID', 'TransactionDate')
--- NOTE: Ini aku udah buat polanya ya guys, untuk StaffID sama CustomerID pastikan aja udah ada ST001 - ST010, habistu untuk TransactionDate kita buatnya dari tahun 2020 - 2022
--- Habistu kalau misalnya mau tambahin jadi ada TR016 dst tambahin aja, habistu gak apa ada duplikat di StaffID sama CustomerID, soalnya kan staff atau customer bisa melakukan transaksi lebih dari 2x
--- Kalau bingung ambil aja referensi dari purchaseheader dari yang aku buat, atau gak dari db FishingMania
 INSERT INTO Transactionheader VALUES
 ('TR001','ST001','CU002','2020-01-02'),
 ('TR002','ST002','CU003','2020-02-01'),
@@ -228,21 +219,14 @@ INSERT INTO Transactionheader VALUES
 ('TR013','ST005','CU010','2022-07-20'),
 ('TR014','ST002','CU001','2022-09-05'),
 ('TR015','ST010','CU005','2022-11-08')
-
+ 
  --TransactionDetail
---('TransactionID','ShoesID','Quantity')
--- NOTE: Ini aku udah buat polanya ya guys, untuk TransactionID pastikan aja data yang ada di Transactionheader ada semua sama CustomerID pastikan aja udah ada CU001 - CU010, 
--- habistu untuk quantity menurut aku paling tinggi buat aja sampai 30 (jadi biar pas kerjain soal no 5 lebih simpel)
--- Habistu kalau misalnya mau tambahin jumlah data dari TransactionDetail tambahin aja, habistu untuk TransactionID kalau bisa buat urutan kek di PurchaseDetail di database kita, biar lebih rapi aja bacanya sama gak susah cari 
--- masalahnya dimana kalau misalnya tiba tiba mau ganti, sekaligus ShoesID gpp ya duplikat soalnya dalam 1 transaction bisa jadi customernya beli 2 jenis sepatu (ShoesID) yang berbeda
--- Kalau bingung ambil aja referensi dari purchasedetail dari yang aku buat, atau gak dari db FishingMania yang TransactionDetail
-
 INSERT INTO TransactionDetail VALUES
 ('TR001','SH002','3'),
 ('TR002','SH004','1'),
 ('TR003','SH005','3'),
 ('TR004','SH003','5'),
-('TR005','SH008','7'),
+('TR005','SH007','7'),
 ('TR006','SH010','6'),
 ('TR007','SH001','9'),
 ('TR008','SH006','10'),
@@ -259,10 +243,40 @@ INSERT INTO TransactionDetail VALUES
 ('TR015','SH009','21'),
 ('TR001','SH003','4'),
 ('TR002','SH002','21'),
-('TR003','SH004','32'),
+('TR003','SH004','16'),
 ('TR004','SH001','12'),
 ('TR005','SH008','14'),
 ('TR006','SH006','17')
 
+-- No 4 Simulate Transaction Process
 
--- insert value 
+-- simulate purchase process
+-- Purchasing new type of shoes
+INSERT INTO PurchaseHeader VALUES
+('PU016','ST003','VE004','2021-01-15'),
+('PU017','ST006','VE010','2021-02-20')
+
+INSERT INTO PurchaseDetail VALUES
+('PU016','SH011','40'),
+('PU017','SH012','50')
+
+INSERT INTO MsShoes VALUES
+('SH011','Fanz','1400000','size: 40 - 48. Color: White & Black, Gray'),
+('SH012','Old Imbalance','1100000','size: 35 - 48. Color: White & Blue, Black')
+
+-- simulate transactions process
+-- 1st part new customer
+INSERT INTO MsCustomer VALUES 
+('CU011','Totong Hulan','Male','1997-08-11','Jl Sunter Utara 5','Totongghulan12@gmail.com'),
+('CU012','Mei Xiao Bao','Female','2000-02-12','Jl Asia Mega 6','Meixiao234@Gmail.com')
+
+-- 2nd part the transaction process
+INSERT INTO Transactionheader VALUES
+('TR016','ST003','CU011','2022-11-28'),
+('TR017','ST007','CU012','2022-12-25')
+
+INSERT INTO TransactionDetail VALUES
+('TR016','SH011','10'),
+('TR017','SH012','15')
+
+-- No 5 answer of 10 cases
