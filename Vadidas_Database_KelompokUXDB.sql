@@ -114,6 +114,11 @@ INSERT INTO MsCustomer VALUES
 ('CU009','Anastasia Susanti','Female','2002-04-12','Jl Anggrek Cendrawasih Bl K/21','susan0204@gmail.com'),
 ('CU010','Yani Suartini','Female','1996-11-28','Jl Kayu Putih 6B/11','suarmercon30@gmail.com')
 
+-- Simulate transaction no 4
+INSERT INTO MsCustomer VALUES 
+('CU011','Totong Hulan','Male','1997-08-11','Jl Sunter Utara 5','Totongghulan12@gmail.com'),
+('CU012','Mei Xiao','Female','2000-02-12','Jl Asia Mega 6','Meixiao234@Gmail.com')
+
 --MsStaff
 INSERT INTO MsStaff VALUES
 ('ST001','Diah Rahayu','Female','diahrayu@gmail.com','Jl Pemuda Asli/11','320000'),
@@ -258,3 +263,6 @@ INSERT INTO TransactionDetail VALUES
 ('TR004','SH001','12'),
 ('TR005','SH008','14'),
 ('TR006','SH006','17')
+
+
+-- insert value 
