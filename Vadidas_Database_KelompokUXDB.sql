@@ -280,3 +280,31 @@ INSERT INTO TransactionDetail VALUES
 ('TR017','SH012','15')
 
 -- No 5 answer of 10 cases
+
+-- No 1 
+SELECT mc.CustomerID, LEFT(CustomerName, CHARINDEX(' ', CustomerName)-1) AS 'CustomerName',
+CustomerGender, SUM(Quantity) AS 'Total Item Purchased'
+FROM MsCustomer mc JOIN
+TransactionHeader th
+ON mc.CustomerID = th.CustomerID
+JOIN TransactionDetail td
+ON td.TransactionID = th.TransactionID
+WHERE CustomerGender = 'Male' AND
+Quantity >= 1
+GROUP BY mc.CustomerID, mc.CustomerName, CustomerGender
+
+
+-- No 2
+SELECT STUFF(ms.ShoesID, 1, 2, 'Shoes ') AS 'Shoes ID', 
+StaffID, ShoesPrice,
+DATENAME(DAY, TransactionDate) AS Day, 
+ShoesName, 
+SUM(Quantity) AS 'Total Sold'
+FROM MsShoes ms
+JOIN TransactionDetail td
+ON ms.ShoesID = td.ShoesID
+JOIN Transactionheader th
+ON th.TransactionID = td.TransactionID
+GROUP BY ms.ShoesID, StaffID, ShoesName, TransactionDate, ShoesPrice
+HAVING ShoesPrice > 120000 AND SUM(Quantity) % 2 = 0;
+
