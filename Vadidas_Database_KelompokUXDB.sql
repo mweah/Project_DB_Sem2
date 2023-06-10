@@ -255,7 +255,6 @@ INSERT INTO TransactionDetail VALUES
 INSERT INTO PurchaseHeader VALUES
 ('PU016','ST003','VE004','2021-01-15'),
 ('PU017','ST006','VE010','2021-02-20')
-
 INSERT INTO PurchaseDetail VALUES
 ('PU016','SH011','40'),
 ('PU017','SH012','50')
@@ -274,7 +273,6 @@ INSERT INTO MsCustomer VALUES
 INSERT INTO Transactionheader VALUES
 ('TR016','ST003','CU011','2022-11-28'),
 ('TR017','ST007','CU012','2022-12-25')
-
 INSERT INTO TransactionDetail VALUES
 ('TR016','SH011','10'),
 ('TR017','SH012','15')
@@ -297,7 +295,7 @@ GROUP BY mc.CustomerID, mc.CustomerName, CustomerGender
 -- No 2
 SELECT STUFF(ms.ShoesID, 1, 2, 'Shoes ') AS 'Shoes ID', 
 StaffID, ShoesPrice,
-DATENAME(DAY, TransactionDate) AS Day, 
+DATENAME(WEEKDAY, TransactionDate) AS Day, 
 ShoesName, 
 SUM(Quantity) AS 'Total Sold'
 FROM MsShoes ms
@@ -308,32 +306,59 @@ ON th.TransactionID = td.TransactionID
 GROUP BY ms.ShoesID, StaffID, ShoesName, TransactionDate, ShoesPrice
 HAVING ShoesPrice > 120000 AND SUM(Quantity) % 2 = 0;
 
+-- No 7  
+SELECT 
+  ph.PurchaseID,
+  ms.StaffID,
+  UPPER(StaffName) AS 'Staff Name',
+  CONVERT(VARCHAR, PurchaseDate, 103) AS 'Purchase Date',
+  'Rp. ' + CAST(SUM(ShoesPrice * Quantity) AS VARCHAR) AS 'Total Expenses'
+FROM 
+  MsStaff ms
+JOIN 
+  PurchaseHeader ph ON ms.StaffID = ph.StaffID
+JOIN 
+  PurchaseDetail pd ON pd.PurchaseID = ph.PurchaseID
+JOIN 
+  MsShoes mss ON mss.ShoesID = pd.ShoesID,
+(
+  SELECT AVG(ShoesPrice * Quantity) AS 'AverageSpent'
+  FROM MsShoes mss
+  JOIN PurchaseDetail pd ON pd.ShoesID = mss.ShoesID
+) AS x
+WHERE 
+  CAST(RIGHT(ms.StaffID, 3) AS INT) % 2 = 1
+  AND (ShoesPrice * Quantity) > x.AverageSpent
+GROUP BY 
+  ph.PurchaseID, 
+  ms.StaffID, 
+  UPPER(StaffName),
+  CONVERT(VARCHAR, PurchaseDate, 103);
 
--- No 9
-CREATE VIEW `Vendor Max Transaction View` AS
-SELECT REPLACE(VendorID, 'VE', 'Vendor ') AS `Vendor Number`, LOWER(VendorName) AS `Vendor Name`, 
-COUNT(*) AS `Total Transaction Made`, MAX(Quantity) AS `Maximum Quantity`
-FROM MsVendor SD
-JOIN Shoes AS SH 
-ON SD.ShoeID = SH.ShoeID
-JOIN Vendors AS VD 
-ON SH.VendorID = VD.VendorID
-WHERE VendorName LIKE '%a%' -- VendorName contains 'a'
-AND Quantity > 20 -- Maximum Quantity greater than 20
-GROUP BY VendorID, VendorName;
 
+-- No 8
+SELECT 
+th.TransactionID,
+ms.StaffID,
+LEFT(StaffName, CHARINDEX(' ', StaffName) - 1) AS 'First Name',
+RIGHT(StaffName, CHARINDEX(' ', REVERSE(StaffName)) - 1) AS 'Last Name',
+SUM(Quantity * ShoesPrice) AS 'Total Revenue'
+FROM MsStaff ms
+JOIN Transactionheader th
+ON ms.StaffID = th.StaffID
+JOIN TransactionDetail td
+ON td.TransactionID = th.TransactionID
+JOIN MsShoes mss
+ON mss.ShoesID = td.ShoesID,
+(
+SELECT AVG(ShoesPrice) AS 'AveragePrice'
+FROM MsShoes
+)x
+WHERE StaffGender = 'Female'
+AND
+ShoesPrice > x.AveragePrice
+GROUP BY th.TransactionID, 
+ms.StaffID,
+LEFT(StaffName, CHARINDEX(' ', StaffName) - 1),
+RIGHT(StaffName, CHARINDEX(' ', REVERSE(StaffName)) - 1)
 
--- No 10 
-CREATE VIEW `Shoes Minimum Transaction View` AS
-SELECT S.SalesID, S.SalesDate, CONCAT(S.FirstName, ' ', S.LastName) AS StaffName, 
-UPPER(S.StaffEmail) AS StaffEmail, MIN(SD.Quantity) AS `Minimum Shoes Sold`, SUM(SD.Quantity) AS `Total Shoes Sold`
-FROM MsStaff S
-JOIN SalesDetails AS SD 
-ON S.SalesID = SD.SalesID
-JOIN Staff AS ST 
-ON S.StaffID = ST.StaffID
-JOIN Shoes AS SH 
-ON SD.ShoeID = SH.ShoeID
-WHERE S.SalesDate > '2020-01-01' -- Date after 2020 
-AND SH.ShoesPrice > 10000 -- ShoesPrice greater than 10000
-GROUP BY S.SalesID, S.SalesDate, StaffName, StaffEmail;
