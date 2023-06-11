@@ -362,3 +362,48 @@ ms.StaffID,
 LEFT(StaffName, CHARINDEX(' ', StaffName) - 1),
 RIGHT(StaffName, CHARINDEX(' ', REVERSE(StaffName)) - 1)
 
+-- No 9
+
+CREATE VIEW VendorMaxTransactionView 
+AS
+SELECT
+    REPLACE(mv.VendorID, 'VE', 'Vendor ') AS 'Vendor Number',
+    LOWER(VendorName) AS 'Vendor Name',
+    COUNT(ph.PurchaseID) AS 'Total Transaction Made',
+    MAX(Quantity) AS 'Maximum Quantity'
+FROM
+    MsVendor mv
+    JOIN PurchaseHeader ph
+	ON mv.VendorID = ph.VendorID
+	JOIN PurchaseDetail pd
+	ON pd.PurchaseID = ph.PurchaseID
+WHERE
+    VendorName LIKE '%a%' 
+    AND Quantity > 20 
+GROUP BY
+    mv.VendorID, VendorName;
+
+-- No 10
+CREATE VIEW ShoesMinimumTransactionView 
+AS
+SELECT th.TransactionID, 
+TransactionDate, 
+StaffName, 
+UPPER(StaffEmail) AS StaffEmail,
+MIN(Quantity) AS 'Minimum Shoes Sold', 
+SUM(Quantity) AS 'Total Shoes Sold'
+FROM
+    MsStaff ms
+    JOIN TransactionHeader th
+	ON ms.StaffID = th.StaffID
+	JOIN TransactionDetail td
+	ON td.TransactionID = th.TransactionID
+	JOIN MsShoes mss
+	ON mss.ShoesID = td.ShoesID
+WHERE
+    YEAR(TransactionDate) > 2020
+    AND ShoesPrice > 10000
+GROUP BY
+th.TransactionID, TransactionDate, StaffName, StaffEmail
+
+SELECT * FROM ShoesMinimumTransactionView
