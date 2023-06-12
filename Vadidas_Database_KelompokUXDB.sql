@@ -306,6 +306,18 @@ ON th.TransactionID = td.TransactionID
 GROUP BY ms.ShoesID, StaffID, ShoesName, TransactionDate, ShoesPrice
 HAVING ShoesPrice > 120000 AND SUM(Quantity) % 2 = 0;
 -- no 3
+SELECT CAST(RIGHT(ms.StaffID,3) AS INTEGER) AS 'StaffNumber',
+UPPER(StaffName) AS 'StaffName',
+StaffSalary,
+COUNT(ph.PurchaseID) AS 'Total Purchase Made',
+MAX(Quantity) AS 'Max Shoes Purchased'
+FROM MsStaff ms JOIN PurchaseHeader ph
+ON ms.StaffID = ph.StaffID
+JOIN PurchaseDetail pd 
+ON ph.PurchaseID = pd.PurchaseID
+WHERE StaffSalary > 150000
+GROUP BY ms.StaffID, StaffSalary, StaffName
+HAVING COUNT(ph.PurchaseID) > 2
 --no 4
 SELECT mv.VendorID, 
 CONCAT(VendorName, ' Vendor') AS 'Vendor Name',
