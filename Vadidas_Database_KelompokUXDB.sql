@@ -305,7 +305,29 @@ JOIN Transactionheader th
 ON th.TransactionID = td.TransactionID
 GROUP BY ms.ShoesID, StaffID, ShoesName, TransactionDate, ShoesPrice
 HAVING ShoesPrice > 120000 AND SUM(Quantity) % 2 = 0;
+-- no 3
+--no 4
+--no 5
+SELECT 
+  MsVendor.VendorID,CONCAT(VendorName,'Company') = 'Vendor Name', VendorPhone,
+  DATENAME(MONTH , PurchaseDate) = 'Purchase Month'
+FROM 
+(SELECT AVG(PurchasedQuantity) = 'AVERAGE' FROM PurchaseDetail) M
+JOIN PurchaseHeader ON MsVendor.VendorID = PurchaseHeader.VendorID
+JOIN PurchaseDetail ON PurchaseHeader.PurchaseID = PurchaseDetail.PurcahseID
+WHERE 
+DATENAME(MONTH,PurchaseDate) = 'April'
 
+-- no 6
+SELECT REPLACE(TransactionHeader.TransactionID,'SA','Invoice') = 'Invoice Number',
+YEAR(TransactionDate) = 'Sales Year', ShoesName, ShoesPrice,
+CONCAT (SoldQuantity, ' piece(s)') = 'Total Item'
+FROM ( SELECT AVG (ShoesPrice) = 'AVERAGE'
+FROM MsShoes) M ,
+TransactionHeader 
+JOIN TrasactionDetail ON Transactionheader.TransactionID = TransactionDetail.TransactionID
+JOIN MsShoes ON TransactionDetail.ShoesID = MsShoes.ShoesID WHERE ShoesName LIKE '%c%'
+AND ShoesPrice > M.AVG
 -- No 7  
 SELECT 
   ph.PurchaseID,
