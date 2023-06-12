@@ -307,6 +307,18 @@ GROUP BY ms.ShoesID, StaffID, ShoesName, TransactionDate, ShoesPrice
 HAVING ShoesPrice > 120000 AND SUM(Quantity) % 2 = 0;
 -- no 3
 --no 4
+SELECT mv.VendorID, 
+CONCAT(VendorName, ' Vendor') AS 'Vendor Name',
+UPPER(REPLACE(VendorEmail, '@gmail.com', '@mail.co.id')) AS 'Vendor Mail',
+SUM(Quantity) AS 'Total Shoes Sold',
+MIN(Quantity) AS 'Minimum Shoes Sold'
+FROM MsVendor mv JOIN PurchaseHeader ph 
+ON mv.VendorID = ph.VendorID
+JOIN PurchaseDetail pd 
+ON ph.PurchaseID = pd.PurchaseID
+GROUP BY mv.VendorID, VendorName, VendorEmail
+HAVING SUM(Quantity) > 13
+AND MIN(Quantity) > 10
 --no 5
 SELECT 
   mv.VendorID,CONCAT(VendorName,' Company') AS 'Vendor Name', VendorPhoneNumber,
@@ -320,16 +332,18 @@ DATENAME(MONTH,PurchaseDate) = 'April'
 AND Quantity > M.AVERAGE
 
 -- no 6
-SELECT REPLACE(TransactionHeader.TransactionID,'SA','Invoice') AS 'Invoice Number',
+SELECT REPLACE(th.TransactionID,'SA','Invoice') AS 'Invoice Number',
 YEAR(TransactionDate) AS 'Sales Year', ShoesName, ShoesPrice,
-CONCAT (SoldQuantity, ' piece(s)') AS 'Total Item'
+CONCAT (Quantity, ' piece(s)') AS 'Total Item'
 FROM  TransactionHeader th
-JOIN
-TransactionHeader 
-JOIN TrasactionDetail ON Transactionheader.TransactionID = TransactionDetail.TransactionID
-JOIN MsShoes ON TransactionDetail.ShoesID = MsShoes.ShoesID WHERE ShoesName LIKE '%c%'
+JOIN TransactionDetail td
+ON th.TransactionID = td.TransactionID
+JOIN MsShoes mss
+ON mss.ShoesID = td.ShoesID,
+(SELECT AVG(ShoesPrice) AS 'AVERAGE'
+FROM MsShoes) M 
+WHERE ShoesName LIKE '%c%'
 AND ShoesPrice > M.AVERAGE
-
 -- No 7  
 SELECT 
   ph.PurchaseID,
