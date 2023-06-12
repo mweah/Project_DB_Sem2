@@ -320,15 +320,16 @@ DATENAME(MONTH,PurchaseDate) = 'April'
 AND Quantity > M.AVERAGE
 
 -- no 6
-SELECT REPLACE(TransactionHeader.TransactionID,'SA','Invoice') = 'Invoice Number',
-YEAR(TransactionDate) = 'Sales Year', ShoesName, ShoesPrice,
-CONCAT (SoldQuantity, ' piece(s)') = 'Total Item'
-FROM ( SELECT AVG (ShoesPrice) = 'AVERAGE'
-FROM MsShoes) M ,
+SELECT REPLACE(TransactionHeader.TransactionID,'SA','Invoice') AS 'Invoice Number',
+YEAR(TransactionDate) AS 'Sales Year', ShoesName, ShoesPrice,
+CONCAT (SoldQuantity, ' piece(s)') AS 'Total Item'
+FROM  TransactionHeader th
+JOIN
 TransactionHeader 
 JOIN TrasactionDetail ON Transactionheader.TransactionID = TransactionDetail.TransactionID
 JOIN MsShoes ON TransactionDetail.ShoesID = MsShoes.ShoesID WHERE ShoesName LIKE '%c%'
-AND ShoesPrice > M.AVG
+AND ShoesPrice > M.AVERAGE
+
 -- No 7  
 SELECT 
   ph.PurchaseID,
