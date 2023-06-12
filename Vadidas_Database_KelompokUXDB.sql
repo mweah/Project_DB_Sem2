@@ -309,14 +309,15 @@ HAVING ShoesPrice > 120000 AND SUM(Quantity) % 2 = 0;
 --no 4
 --no 5
 SELECT 
-  MsVendor.VendorID,CONCAT(VendorName,'Company') = 'Vendor Name', VendorPhone,
-  DATENAME(MONTH , PurchaseDate) = 'Purchase Month'
-FROM 
-(SELECT AVG(PurchasedQuantity) = 'AVERAGE' FROM PurchaseDetail) M
-JOIN PurchaseHeader ON MsVendor.VendorID = PurchaseHeader.VendorID
-JOIN PurchaseDetail ON PurchaseHeader.PurchaseID = PurchaseDetail.PurcahseID
+  mv.VendorID,CONCAT(VendorName,' Company') AS 'Vendor Name', VendorPhoneNumber,
+  DATENAME(MONTH , PurchaseDate) AS 'Purchase Month'
+FROM MsVendor mv
+JOIN PurchaseHeader ph ON mv.VendorID = ph.VendorID
+JOIN PurchaseDetail pd ON ph.PurchaseID = pd.PurchaseID,
+(SELECT AVG(Quantity) AS 'AVERAGE' FROM PurchaseDetail) M
 WHERE 
 DATENAME(MONTH,PurchaseDate) = 'April'
+AND Quantity > M.AVERAGE
 
 -- no 6
 SELECT REPLACE(TransactionHeader.TransactionID,'SA','Invoice') = 'Invoice Number',
